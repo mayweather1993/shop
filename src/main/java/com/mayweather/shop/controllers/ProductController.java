@@ -17,13 +17,13 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<Product>> listAllProducts() {
+    public ResponseEntity<List<Product>> listAll() {
         List<Product> allProducts = productService.getAllProducts();
         return new ResponseEntity<>(allProducts, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable("id")final Long id) {
+    public ResponseEntity<Product> get(@PathVariable("id")final Long id) {
         Product product = productService.findById(id);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
