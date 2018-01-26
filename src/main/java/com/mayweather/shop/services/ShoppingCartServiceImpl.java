@@ -1,20 +1,21 @@
 package com.mayweather.shop.services;
 
-import com.mayweather.shop.dao.ProductRepository;
 import com.mayweather.shop.dao.ShoppingCartRepository;
-import com.mayweather.shop.domain.Product;
+import com.mayweather.shop.domain.ProductForCart;
 import com.mayweather.shop.domain.ShoppingCart;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private final ShoppingCartRepository shoppingCartRepository;
-    private final ProductRepository productRepository;
+    private final ProductDefinitionService productDefinitionService;
+    private final ProductForCartService productForCartService;
+
 
     @Override
     public ShoppingCart findById(Long id) {
@@ -27,10 +28,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void addProduct(Long cartId, Long productId) {
-        Product product = productRepository.findOne(productId);
-        ShoppingCart cart = shoppingCartRepository.findOne(cartId);
-        cart.getProducts().add(product);
+    public void addProduct(Long cartId, Long productFromCartId) {
+        ShoppingCart cart = findById(cartId);
+        List<ProductForCart> products = cart.getProducts();
+        for (ProductForCart product :
+                products) {
+            if (product.getProductDefinition().getId().equals(productFromCartId)) {
+                Long count = product.getCount();
+                product.setCount(++count);
+                productForCartService.save(product);
+            }
+        }
+        if(products.isEmpty() || !products.contains(productForCartService.findById(productFromCartId))){
+            products.add(productForCartService.findById(productFromCartId));
+        }
     }
 
     @Override

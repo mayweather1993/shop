@@ -20,9 +20,7 @@ public class ShoppingCart {
     private Long id;
 
     @ManyToMany
-    @JoinTable(name = "cart_products" , joinColumns = @JoinColumn(name = "card_id"),
-    inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;
-
-
+    @JoinTable(name = "cart_products", joinColumns = @JoinColumn(name = "card_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<ProductForCart> products;
 }

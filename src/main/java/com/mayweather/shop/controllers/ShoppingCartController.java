@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-//in progress
 @RequestMapping("/shoppingCart")
 @RestController
 @AllArgsConstructor
@@ -32,7 +31,7 @@ public class ShoppingCartController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "{id}")
+    @DeleteMapping(value = "{cartId}")
     public ResponseEntity<ShoppingCart> delete(@PathVariable("cartId") final Long cartId) {
         shoppingCartService.deleteCartById(cartId);
         return new ResponseEntity<>(HttpStatus.OK);
